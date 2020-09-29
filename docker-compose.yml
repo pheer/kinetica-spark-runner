@@ -1,0 +1,33 @@
+version: '3'
+# Simple compose file was used to test locally end to end
+services:
+  gpudb:
+    image: kinetica/kinetica-intel:7.0.13
+    ports:
+     - "8080:8080"
+     - "8181:8181"
+     - "9191:9191"
+     - "9192:9192"
+    container_name: kinetica_container
+    privileged: true
+    
+    networks:
+      - mynet
+    volumes:
+      - /Users/pheer/Downloads:/data
+      - /opt/gpudb/persist:/opt/gpudb/persist
+      
+  postgresdb:
+    image: postgres
+    ports:
+      - 5432:5432
+    container_name: postgres_container
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - mynet
+    volumes:
+      - /Users/pheer/Downloads:/data
+ 
+networks:
+  mynet:

@@ -1,0 +1,20 @@
+[
+	{
+		"Classification": "capacity-scheduler",
+		"Properties": {
+			"yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator"
+		}
+	},
+	{
+		"Classification": "spark-defaults",
+		"properties": {
+			"spark.dynamicAllocation.enabled": "true"
+		}
+	},
+	{
+		"Classification": "spark",
+		"Properties": {
+			"maximizeResourceAllocation": "true"
+		}
+	}
+]
