@@ -12,15 +12,25 @@ def relational_kinetica_egress():
 
     spark = sparkBuilder.getOrCreate();
 
-    df = spark.read.format("com.kinetica.spark").options(**kineticaEgress).load()
+
+    for k,v in hadoopOpts.items():
+        spark._jsc.hadoopConfiguration().set(k, v)
+
+    #df = spark.read.parquet(appOpts.get('input_dir'))
+    #df = spark.read.format("com.kinetica.spark").options(**kineticaEgress).load()
+    df = spark.read.format("csv").option("header","true").load(appOpts.get('input_dir'))
 
     print("================ Partitions to Process ======>>>>>>>>>>>>>>")
     print(df.rdd.getNumPartitions())
     print("===========================================================")
     all_rows = df.count()
-
+    print("----schema----")
+    print(df.printSchema())
+    print("--------------")
     #df.write.format("jdbc").options(**relationalOpts).save()
-    df.write.format("csv").mode("overwrite").save("/tmp/foobang")
+    #df.write.format("csv").mode("overwrite").save("/tmp/foobang")
+    # df.write.format("csv").mode("overwrite").save(appOpts.get('csv_output_dir'))
+    df.write.option("repartition", appOpts.get('repartition')).parquet(appOpts.get('output_dir'))
 
     spark.stop()
 
@@ -40,7 +50,9 @@ if __name__ == "__main__":
     relationalOpts = {}
     sparkOpts = {}
     kineticaEgress = {}
-
+    hadoopOpt = {}
+    appOpts = {}
+    
     with open(sys.argv[1]) as f:
         root = yaml.load_all(f, Loader=yaml.FullLoader)
 
@@ -48,5 +60,7 @@ if __name__ == "__main__":
             relationalOpts = rootList['relationalOpts']
             sparkOpts = rootList['sparkOpts']
             kineticaEgress = rootList['kineticaEgress']
+            hadoopOpts = rootList['hadoopOpts']
+            appOpts = rootList['appOpts']
 
     relational_kinetica_egress()
