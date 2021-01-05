@@ -1,0 +1,48 @@
+######
+# spark master in EMR, cloudera etc. master would be yarn
+######
+sparkMaster: local
+
+appOpts:
+  #input_dir: wasbs://azure-container-name0@storage-acct-name.blob.core.windows.net/file_folder
+  output_dir: /opt/gpudb/persist/bar
+  input_dir: /opt/gpudb/persist/foo
+  output_rows_per_file: 10000000
+  repartition: 1
+
+# defines jdbc properties to put the data into 
+# For full list of options See: https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
+relationalOpts:
+   url: jdbc:postgresql://host/blah
+   dbtable: schema.table
+
+   user: user
+   password: PASS
+   driver: org.postgresql.Driver
+   numPartitions: 100
+   #batchsize: 500
+   inferSchema: false
+
+sparkOpts:
+  spark.jars: /tmp/kinetica-spark-runner-1.0-SNAPSHOT-uber.jar
+  spark.driver.memory: 128g
+  spark.executor.memory: 8g
+  spark.memory.offHeap.enabled: true
+  spark.memory.offHeap.size: 12g
+
+hadoopOpts:
+   fs.azure.account.key.simcorpring0storageacct.blob.core.windows.net: <>
+   fs.wasbs.impl: org.apache.hadoop.fs.azure.NativeAzureFileSystem
+   parquet.block.size: 268435456
+
+# This section defines the kinetica connection and Egress configuration
+# For full list of options See: https://www.kinetica.com/docs/connectors/spark_guide.html#property-reference for full list of valid options
+kineticaEgress:
+   database.url: http://13.92.24.109:9191
+   database.jdbc_url: jdbc:kinetica://13.92.24.109:9191;ParentSet=test
+   database.username: admin
+   database.password: Kinetica1!
+   table.name: foo
+   spark.num_partitions: 100
+   spark.rows_per_partition: 200
+   inferSchema: false
