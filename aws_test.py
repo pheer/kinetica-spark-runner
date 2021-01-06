@@ -37,7 +37,7 @@ def relational_kinetica_egress():
 
     end_time = time.time()
     print("================ Export finished ====================")
-    print(str(all_rows)+" datasets exported.")
+    print(str(all_rows)+" rows exported.")
     print('Execution time in seconds: %f' % (end_time-start_time))
     print("=====================================================")
 
