@@ -1,6 +1,7 @@
 # Kinetica Spark Ingest/Egress Runner
 
-Pulls from relational sources.  The postgres jdbc driver is included in the bundle jar.
+Abstraction on spark connector to move data around from dataframe level.  The postgres jdbc driver, azure blob, aws s3 jars bundled in uber jar.
+
 
 ## Prerequisites
 
@@ -19,7 +20,7 @@ Pulls from relational sources.  The postgres jdbc driver is included in the bund
 Target directory will have a tar.gz file with the following files:
 
 * `kinetica-spark-runner-1.0-SNAPSHOT-uber.jar`
-* `conf/app_config.yml`
+* `conf/conf.yml`
 
 
 ## Run pyspark
@@ -118,3 +119,12 @@ kineticaIngest:
 SPARK_HOME=/opt/gpudb/kitools/kio/lib/python3.6/site-packages/pyspark-2.3.2-py3.6.egg/pyspark /opt/gpudb/kitools/kio/kio run_cmd /opt/gpudb/bin/gpudb_python egress.py egress.yaml
 ```
  
+## AWS
+
+set env vars:
+
+```
+export AWS_ACCESS_KEY_ID=<>
+export AWS_SECRET_ACCESS_KEY=<>
+export AWS_DEFAULT_REGION=us-east-1
+```
