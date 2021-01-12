@@ -17,7 +17,10 @@ import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
 import com.google.common.collect.Maps;
 import com.kinetica.spark.sqlextract.config.AppConfig;
+import com.kinetica.spark.util.Flatten;
 import com.kinetica.spark.util.table.SparkKineticaTableUtil;
+import static org.apache.spark.sql.functions.col;
+import static org.apache.spark.sql.functions.explode;
 
 public class KineticaRelationalPull {
 
@@ -40,6 +43,7 @@ public class KineticaRelationalPull {
 		try (InputStream in = Files.newInputStream(Paths.get(args[0]))) {
 			config = yaml.loadAs(in, AppConfig.class);
 		} catch (Exception e) {
+			e.printStackTrace();
 			//throw new RuntimeException("Failed to parse config file. exception: " + e);
 			yaml = new Yaml();
 			try (InputStream in = Files.newInputStream(Paths.get(args[0]))) {
@@ -54,13 +58,32 @@ public class KineticaRelationalPull {
 		
 		LOG.info(config);
 
-		SparkSession sparkSession = SparkSession.builder().appName(APP_NAME).master("local[*]").getOrCreate();
+		SparkSession sparkSession = SparkSession.builder().appName(APP_NAME).master("local[*]")
 
-		Dataset<Row> df = sparkSession.read().format("jdbc").options(getOptsFromMap(config.getRelationalOpts())).load();
+		.config("spark.executor.memory", "6g")
+	     .config("spark.driver.memory", "12g")
+	     .config("spark.memory.offHeap.enabled",true)
+	     .config("spark.memory.offHeap.size","12g")   .getOrCreate();
+		
+//		Dataset<Row> df = sparkSession.read().format("jdbc").options(getOptsFromMap(config.getRelationalOpts())).load();
+		Dataset<Row> df1 = sparkSession.read().format("com.databricks.spark.avro").load("/Users/pheer/Downloads/part-00000-fd33e4d3-0f44-4c5c-a9f5-d74d23701ea8-c000.avro");
 
+//		Dataset<Row> df = SparkSchemaUtils.flattenJSONdf(df1);
+		
+		Dataset<Row> df = df1.select(explode(col("fltdOutput.fdm_fltdMessage")).as("explode_fltdOutput"));
+
+		
+//		Dataset<Row> df = sparkSession.read().format("com.databricks.spark.avro").load("/Users/pheer/Downloads/sba_cat33_hex_2020_07_31_adsb.avro");
 		// pull df from relational data source
-		// df = Flatten.flatten_all(df);
+//		df.printSchema();
+//		df = Flatten.flatten_all(df);
 
+		df.repartition(100000);
+//		final String querySelectSQL = SparkSchemaUtils.flattenSchema(df.schema(), null);
+//        df.createOrReplaceTempView("source"); 
+//        System.out.println(querySelectSQL);
+//        Dataset<Row> flattenData = sparkSession.sql("SELECT * FROM source");
+		
 		if (CollectionUtils.isNotEmpty(config.getShardKeys()))
 			SparkKineticaTableUtil.setShardKeys(config.getShardKeys());
 		if (CollectionUtils.isNotEmpty(config.getPrimaryKeys()))
@@ -72,8 +95,11 @@ public class KineticaRelationalPull {
 		if (CollectionUtils.isNotEmpty(config.getDictFields()))
 			SparkKineticaTableUtil.setDictEncodingFields(config.getDictFields());
 
-		df.write().format("com.kinetica.spark").options(getOptsFromMap(config.getKineticaIngest())).save();
+		System.out.println("count ---> " + df.count());
+		df.toJSON().show(1, false);
+//		df.write().format("com.kinetica.spark").options(getOptsFromMap(config.getKineticaIngest())).save();
 
+//		df.printSchema();
 		sparkSession.stop();
 	}
 

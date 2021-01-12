@@ -39,11 +39,14 @@ hadoopOpts:
 # This section defines the kinetica connection and Egress configuration
 # For full list of options See: https://www.kinetica.com/docs/connectors/spark_guide.html#property-reference for full list of valid options
 kineticaIngest:
-   database.url: http://13.92.24.109:9191
-   database.jdbc_url: jdbc:kinetica://13.92.24.109:9191;ParentSet=test
+   database.url: http://172.31.33.9:9191
+   database.jdbc_url: jdbc:kinetica://172.31.33.9:9191;ParentSet=test
    database.username: admin
    database.password: Kinetica1!
-   table.name: foo
+   table.name: FOO.test_ex
    spark.num_partitions: 100
    spark.rows_per_partition: 200
    inferSchema: false
+   table.create: true
+#   ingester.flatten_source_schema: true
+#   flatten_source_schema: true

@@ -13,7 +13,7 @@ public class TestYaml {
 
 		Yaml yaml = new Yaml();
 
-		File coreYml = new File("app_config.yml");
+		File coreYml = new File("conf.yml");
 
 //		InputStream in = TestYaml.class.getClassLoader().getResourceAsStream("app_config.yaml");
 

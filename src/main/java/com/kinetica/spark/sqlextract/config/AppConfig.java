@@ -19,7 +19,10 @@ public class AppConfig {
 	private Map<String, String> relationalOpts = new HashMap<String, String>();
 
 	private Map<String, String> sparkOpts = new HashMap<String, String>();
-	
+
+	private Map<String, String> appOpts = new HashMap<String, String>();
+	private Map<String, String> hadoopOpts = new HashMap<String, String>();
+
 	public List<String> getShardKeys() {
 		return shardKeys;
 	}
@@ -89,6 +92,22 @@ public class AppConfig {
 		return "AppConfig [sparkMaster=" + sparkMaster + ", shardKeys=" + shardKeys + ", primaryKeys=" + primaryKeys
 				+ ", wktFields=" + wktFields + ", dictFields=" + dictFields + ", kineticaIngest=" + kineticaIngest
 				+ ", relationalOpts=" + relationalOpts + ", sparkOpts=" + sparkOpts + "]";
+	}
+
+	public Map<String, String> getAppOpts() {
+		return appOpts;
+	}
+
+	public void setAppOpts(Map<String, String> appOpts) {
+		this.appOpts = appOpts;
+	}
+
+	public Map<String, String> getHadoopOpts() {
+		return hadoopOpts;
+	}
+
+	public void setHadoopOpts(Map<String, String> hadoopOpts) {
+		this.hadoopOpts = hadoopOpts;
 	}
 
 
