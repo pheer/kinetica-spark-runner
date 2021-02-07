@@ -19,7 +19,8 @@
 
 		<java.version>1.8</java.version>
 
-		<spark.version>2.3.2</spark.version>
+		<spark.version>2.4.7</spark.version>
+		<hadoop.version>2.7.7</hadoop.version>
 		<postgres.driver.version>42.2.5</postgres.driver.version>
 
 		<!-- Kinetica dep versions -->
@@ -49,7 +50,7 @@
 		<!-- Spark deps -->
 		<dependency>
 			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-sql_2.11</artifactId>
+			<artifactId>spark-sql_2.12</artifactId>
 			<version>${spark.version}</version>
 			<!-- <scope>provided</scope> -->
 		</dependency>
@@ -65,37 +66,33 @@
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-storage</artifactId>
-			<version>3.1.0</version>
+			<version>8.6.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-azure</artifactId>
-			<version>2.7.0</version>
+			<version>${hadoop.version}</version>
 		</dependency>
 		
 		<!-- AWS deps -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
-            <version>2.7.4</version>
+            <version>${hadoop.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-aws</artifactId>
-            <version>2.7.4</version>
+            <version>${hadoop.version}</version>
         </dependency>
         
         <!-- Avro spark -->
-		<dependency>
-		    <groupId>com.databricks</groupId>
-		    <artifactId>spark-avro_2.11</artifactId>
-		    <version>4.0.0</version>
-		</dependency>
+
 		<!-- General deps -->
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-common</artifactId>
-			<version>2.7.4</version>
+			<version>${hadoop.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -359,3 +356,4 @@
 	</repositories>
 
 </project>
+
