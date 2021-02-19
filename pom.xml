@@ -7,7 +7,7 @@
 
 	<groupId>com.kinetica</groupId>
 	<artifactId>kinetica-spark-runner</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>7.1-SNAPSHOT</version>
 
 	<name>kinetica-spark-runner</name>
 
@@ -24,9 +24,9 @@
 		<postgres.driver.version>42.2.5</postgres.driver.version>
 
 		<!-- Kinetica dep versions -->
-		<gpudb.api.version>7.0.18.1</gpudb.api.version>
-		<kinetica.jdbc.version>7.0.15.0</kinetica.jdbc.version>
-		<kinetica.spark.version>7.0.6.0</kinetica.spark.version>
+		<gpudb.api.version>7.1.2.3</gpudb.api.version>
+		<kinetica.jdbc.version>7.1.2.1</kinetica.jdbc.version>
+		<kinetica.spark.version>7.1.0.0</kinetica.spark.version>
 	</properties>
 
 	<dependencies>
@@ -50,7 +50,7 @@
 		<!-- Spark deps -->
 		<dependency>
 			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-sql_2.12</artifactId>
+			<artifactId>spark-sql_2.11</artifactId>
 			<version>${spark.version}</version>
 			<!-- <scope>provided</scope> -->
 		</dependency>
